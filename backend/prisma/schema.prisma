@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id          Int      @id @default(autoincrement())
+  name        String
+  createdAt   DateTime @default(now())
+
+  dataSources DataSource[]
+  records     EmissionRecord[]
+}
+
+model DataSource {
+  id          Int      @id @default(autoincrement())
+  sourceType  String
+  fileName    String
+  uploadedAt  DateTime @default(now())
+
+  companyId   Int
+  company     Company @relation(fields: [companyId], references: [id])
+
+  records     EmissionRecord[]
+}
+
+model EmissionRecord {
+  id              Int      @id @default(autoincrement())
+  category        String
+  scope           String
+  activityValue   Float
+  unit            String
+  status          String
+  isSuspicious    Boolean  @default(false)
+
+  companyId       Int
+  company         Company @relation(fields: [companyId], references: [id])
+
+  sourceId        Int
+  source          DataSource @relation(fields: [sourceId], references: [id])
+
+  auditLogs       AuditLog[]
+
+  createdAt       DateTime @default(now())
+}
+
+model AuditLog {
+  id          Int      @id @default(autoincrement())
+  action      String
+  changedBy   String
+  timestamp   DateTime @default(now())
+
+  recordId    Int
+  record      EmissionRecord @relation(fields: [recordId], references: [id])
+}
