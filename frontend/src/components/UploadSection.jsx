@@ -142,12 +142,7 @@ const UploadSection = () => {
     Selected: {electricityFile.name}
   </p>
 )}
-
-{electricityFile && (
-  <p className="text-sm text-green-600 mb-2">
-    Selected: {electricityFile.name}
-  </p>
-)}
+        
         <button
   onClick={uploadElectricity}
   disabled={!electricityFile}
