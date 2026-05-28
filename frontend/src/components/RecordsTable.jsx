@@ -32,7 +32,7 @@ const RecordsTable = () => {
                 activityValue: currentValue,
             });
 
-            fetchRecords();
+            window.location.reload();
         } catch (error) {
             console.log(error);
         }
